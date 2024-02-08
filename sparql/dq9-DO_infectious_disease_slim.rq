@@ -1,0 +1,27 @@
+# DQ9. Diseases in DO_infectious_disease_slim with their parents and branches
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX oboInOwl: <http://www.geneontology.org/formats/oboInOwl#>
+PREFIX doid: <http://purl.obolibrary.org/obo/doid#>
+
+SELECT ?id ?label (GROUP_CONCAT(DISTINCT ?parent; separator="|") AS ?parents)
+    (GROUP_CONCAT(DISTINCT ?branch; separator="|") AS ?branches)
+WHERE {
+    ?class a owl:Class ;
+        oboInOwl:id ?id ;
+        rdfs:label ?label ;
+        oboInOwl:inSubset doid:DO_infectious_disease_slim ;
+        rdfs:subClassOf ?parent_class ;
+        rdfs:subClassOf* ?branch_class .
+
+    ?parent_class oboInOwl:id ?parent_id ;
+        rdfs:label ?parent_label .
+    BIND( CONCAT( ?parent_label, " (", ?parent_id, ")" ) AS ?parent )
+
+    ?branch_class rdfs:subClassOf obo:DOID_4 ;
+        oboInOwl:id ?branch_id ;
+        rdfs:label ?branch_label .
+    BIND(CONCAT(?branch_label, " (", ?branch_id, ")" ) AS ?branch )
+}
+GROUP BY ?id ?label

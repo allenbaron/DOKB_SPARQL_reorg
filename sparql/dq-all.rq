@@ -1,0 +1,78 @@
+# DQ. All diseases and possible information
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX oboInOwl: <http://www.geneontology.org/formats/oboInOwl#>
+
+SELECT *
+WHERE {
+    ?IRI a owl:Class ;
+        oboInOwl:id ?id ;
+        rdfs:label ?label ;
+        oboInOwl:hasOBONamespace "disease_ontology" .
+    
+    # deprecation status
+    OPTIONAL { ?IRI owl:deprecated ?deprecated . }
+
+    # parent
+    OPTIONAL {
+        ?IRI rdfs:subClassOf ?parent_IRI .
+        FILTER( !isBlank( ?parent_IRI ) )
+    }
+
+    # def
+    OPTIONAL {
+        ?IRI obo:IAO_0000115 ?definition .
+        ?def_annot owl:annotatedSource ?IRI ;
+            owl:annotatedProperty obo:IAO_0000115 ;
+            owl:annotatedTarget ?definition ;
+            oboInOwl:hasDbXref ?def_src ;
+            dc:type ?def_evidence .
+    }
+
+    # synonym
+    OPTIONAL {
+        VALUES ?syn_type {
+             oboInOwl:hasExactSynonym oboInOwl:hasBroadSynonym
+             oboInOwl:hasNarrowSynonym oboInOwl:hasRelatedSynonym
+        }
+        ?IRI ?syn_type ?synonym .
+    }
+
+    # xref
+    OPTIONAL { ?IRI oboInOwl:hasDbXref ?xref . }
+    
+    #skos
+    OPTIONAL { 
+        VALUES ?skos_type {
+            skos:exactMatch skos:closeMatch skos:broadMatch skos:narrowMatch
+            skos:relatedMatch
+        }
+        ?IRI ?skos_type ?skos_mapping .
+    }
+
+    # alternate ID
+    OPTIONAL { ?IRI oboInOwl:hasAlternativeId ?alt_id . }
+
+    # subset
+    OPTIONAL { ?IRI oboInOwl:inSubset ?subset . }
+
+    # comment
+    OPTIONAL { ?IRI rdfs:comment ?comment . }
+    
+    # logical axioms (OWL) - equivalent class (
+    OPTIONAL {
+        ?IRI owl:equivalentClass ?eq_anon .
+        ?eq_anon owl:intersectionOf / ( rdf:first | (rdf:rest/rdf:first)+ ) ?eq_element .
+        ?eq_element a ?eq_type .
+    }
+
+    # logical axioms (OWL) - subclass
+    OPTIONAL {
+        ?IRI rdfs:subClassOf ?sc_anon .
+        ?sc_anon owl:intersectionOf / ( rdf:first | (rdf:rest/rdf:first)+ ) ?sc_element .
+        ?sc_element a ?sc_type .
+    }
+
+    # term replaced by (only for deprecated classes)
+    OPTIONAL { ?IRI obo:IAO_0100001 ?replaced_by . }
+}

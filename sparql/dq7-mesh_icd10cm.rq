@@ -1,0 +1,14 @@
+# DQ7. Complete mapping from MeSH disease to ICD10CM codes, using DO disease cross-references
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX oboInOwl: <http://www.geneontology.org/formats/oboInOwl#>
+
+SELECT DISTINCT ?MESH ?DO_bridge ?ICD10CM
+WHERE {
+    ?class oboInOwl:id ?DO_bridge;
+        oboInOwl:hasDbXref ?MESH ;
+        oboInOwl:hasDbXref ?ICD10CM .
+    FILTER( CONTAINS( ?MESH, "MESH" ) )
+    FILTER( CONTAINS( ?ICD10CM, "ICD10" ) )
+
+    FILTER NOT EXISTS { ?class owl:deprecated ?any . }
+}

@@ -1,0 +1,26 @@
+# DQ4. Sarcoma diseases with parents, identified as descendants of sarcoma (DOID:1115) or with 'sarcoma' in their label
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX oboInOwl: <http://www.geneontology.org/formats/oboInOwl#>
+PREFIX DOID: <http://purl.obolibrary.org/obo/DOID_>
+
+SELECT ?id ?label (GROUP_CONCAT(DISTINCT ?parent; separator="|") AS ?parents)
+    ?sarcoma_in_label ?sarcoma_descendant
+WHERE {
+    ?class oboInOwl:id ?id ;
+        rdfs:label ?label ;
+        rdfs:subClassOf ?parent_class .
+    
+    ?parent_class oboInOwl:id ?parent_id ;
+        rdfs:label ?parent_label .
+    BIND( CONCAT( ?parent_label, " (", ?parent_id, ")" ) AS ?parent )
+
+    BIND(
+        EXISTS { 
+            ?class rdfs:subClassOf* DOID:1115 .
+        } AS ?sarcoma_descendant
+    )
+    BIND( REGEX( ?label, "sarcoma", "i" ) AS ?sarcoma_in_label )
+    FILTER( ?sarcoma_in_label || ?sarcoma_descendant )
+}
+GROUP BY ?id ?label ?sarcoma_in_label ?sarcoma_descendant

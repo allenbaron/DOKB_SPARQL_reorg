@@ -1,0 +1,13 @@
+# DQ3. Syndromes (branch search; returns IRI, ID and label)
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX oboInOwl: <http://www.geneontology.org/formats/oboInOwl#>
+
+SELECT ?class ?id ?label
+WHERE {
+    ?class a owl:Class ;
+        oboInOwl:id ?id ;
+        rdfs:label ?label ;
+        rdfs:subClassOf* obo:DOID_225 .
+}
