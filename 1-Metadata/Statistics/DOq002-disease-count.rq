@@ -1,0 +1,18 @@
+#id: DOq002
+#description: Count of active/deprecated diseases
+#input: doid.owl
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX oboInOwl: <http://www.geneontology.org/formats/oboInOwl#>
+
+SELECT ?status (COUNT(DISTINCT ?iri) AS ?diseases)
+WHERE {
+  ?iri a owl:Class ;
+    oboInOwl:hasOBONamespace "disease_ontology" .
+
+  BIND(
+    IF(EXISTS { ?iri owl:deprecated true }, "deprecated", "active") AS ?status
+  )
+}
+GROUP BY ?status
+ORDER BY ?status
