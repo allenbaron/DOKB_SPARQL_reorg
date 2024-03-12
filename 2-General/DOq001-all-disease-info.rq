@@ -1,0 +1,96 @@
+#id: DOq001
+#description: All diseases and their linked data in the DO
+#input: doid.owl
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX oboInOwl: <http://www.geneontology.org/formats/oboInOwl#>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT *
+WHERE {
+  # general disease information
+  ?iri a owl:Class ;
+    oboInOwl:id ?id ;
+    rdfs:label ?label ;
+    oboInOwl:hasOBONamespace "disease_ontology" .
+
+  # deprecation status
+  OPTIONAL { ?iri owl:deprecated ?deprecated . }
+
+  # alternate ID(s)
+  OPTIONAL { ?iri oboInOwl:hasAlternativeId ?alt_id . }
+
+  # term replaced by -- only for deprecated classes
+  OPTIONAL { ?iri obo:IAO_0100001 ?replaced_by . }
+
+  # definition
+  OPTIONAL {
+    ?iri obo:IAO_0000115 ?definition .
+
+    # definition source(s) -- must have at least one when defined
+    OPTIONAL {
+      [] owl:annotatedSource ?iri ;
+        owl:annotatedProperty obo:IAO_0000115 ;
+        owl:annotatedTarget ?definition ;
+        oboInOwl:hasDbXref ?def_src .
+    }
+
+    # evidence code(s)
+    OPTIONAL {
+      [] owl:annotatedSource ?iri ;
+        owl:annotatedProperty obo:IAO_0000115 ;
+        owl:annotatedTarget ?definition ;
+        dc:type ?evidence_code .
+    }
+  }
+
+  # comment
+  OPTIONAL { ?iri rdfs:comment ?comment . }
+
+  # parent(s) -- must have at least one
+  OPTIONAL {
+    ?iri rdfs:subClassOf ?parent_IRI .
+    FILTER(!isBlank(?parent_IRI))
+  }
+
+  # synonym(s)
+  OPTIONAL {
+    VALUES ?syn_type {
+       oboInOwl:hasExactSynonym oboInOwl:hasBroadSynonym
+       oboInOwl:hasNarrowSynonym oboInOwl:hasRelatedSynonym
+    }
+    ?iri ?syn_type ?synonym .
+  }
+
+  # xref(s)
+  OPTIONAL { ?iri oboInOwl:hasDbXref ?xref . }
+
+  # skos mapping(s)
+  OPTIONAL {
+    VALUES ?skos_type {
+      skos:exactMatch skos:closeMatch skos:broadMatch skos:narrowMatch
+      skos:relatedMatch
+    }
+    ?iri ?skos_type ?skos_mapping .
+  }
+
+  # subset(s)
+  OPTIONAL { ?iri oboInOwl:inSubset ?subset . }
+
+  # OWL equivalent class logical axiom(s) -- likely to be incomplete
+  OPTIONAL {
+    ?iri owl:equivalentClass ?eq_placeholder .
+    ?eq_placeholder owl:intersectionOf/(rdf:first|(rdf:rest/rdf:first)+) ?eq_element .
+    ?eq_element a ?eq_type .
+  }
+
+  # OWL subclass of logical axiom(s) -- likely to be incomplete
+  OPTIONAL {
+    ?iri rdfs:subClassOf ?sc_placeholder .
+    ?sc_placeholder owl:intersectionOf / (rdf:first | (rdf:rest/rdf:first)+) ?sc_element .
+    ?sc_element a ?sc_type .
+  }
+}
