@@ -58,11 +58,11 @@ WHERE {
 
   # synonym(s)
   OPTIONAL {
-    VALUES ?syn_type {
+    VALUES ?syn_relation {
        oboInOwl:hasExactSynonym oboInOwl:hasBroadSynonym
        oboInOwl:hasNarrowSynonym oboInOwl:hasRelatedSynonym
     }
-    ?iri ?syn_type ?synonym .
+    ?iri ?syn_relation ?synonym .
   }
 
   # xref(s)
