@@ -1,0 +1,38 @@
+#id: DOq008
+#description: Count of all imported terms from other ontologies by root (auto-identified)
+#input: doid-merged.owl
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+SELECT ?import_root ?namespace (COUNT(DISTINCT ?iri) as ?count)
+FROM <http://purl.obolibrary.org/obo/doid/doid-merged.owl>
+WHERE {
+  {
+    # Identify import root classes
+    SELECT ?root_iri
+    WHERE {
+      {
+        # root has no superclass (exclusion of deprecated required)
+        ?root_iri a owl:Class .
+        FILTER NOT EXISTS { ?root_iri rdfs:subClassOf ?any }
+        FILTER(!isBlank(?root_iri) && !CONTAINS(str(?root_iri), "DOID"))
+        FILTER NOT EXISTS { ?root_iri owl:deprecated true }
+      }
+      UNION
+      {
+        # root subClassOf owl:Thing
+        ?root_iri a owl:Class ;
+          rdfs:subClassOf owl:Thing .
+        FILTER(!CONTAINS(STR(?root_iri), "DOID"))
+      }
+    }
+  }
+  ?root_iri rdfs:label ?import_root .
+
+  ?iri a owl:Class ;
+    rdfs:subClassOf* ?root_iri .
+  FILTER(!isBlank(?iri) && !CONTAINS(STR(?iri), "doid"))
+  BIND(STRBEFORE(STRAFTER(STR(?iri), "obo/"), "_") AS ?namespace)
+}
+GROUP BY ?import_root ?namespace
+ORDER BY ?import_root ?namespace
