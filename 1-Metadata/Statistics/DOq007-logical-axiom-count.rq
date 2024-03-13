@@ -1,0 +1,22 @@
+#id: DOq007
+#description: Count logical axioms by type (active diseases only)
+#input: doid.owl
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX oboInOwl: <http://www.geneontology.org/formats/oboInOwl#>
+
+SELECT ?axiom_type (COUNT(DISTINCT ?logical_axiom) as ?count)
+WHERE {
+  VALUES ?type { owl:equivalentClass rdfs:subClassOf }
+
+  ?iri a owl:Class ;
+    oboInOwl:hasOBONamespace "disease_ontology" ;
+	?type ?logical_axiom .
+
+  BIND(STRAFTER(str(?type), "#") AS ?axiom_type)
+
+  FILTER(isBlank(?logical_axiom))
+  FILTER NOT EXISTS { ?iri owl:deprecated true }
+}
+GROUP BY ?axiom_type
+ORDER BY ?axiom_type
