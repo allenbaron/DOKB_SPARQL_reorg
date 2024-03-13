@@ -1,0 +1,40 @@
+#id: DOq004
+#description: Count of all definitions, sources, and evidence codes on active/deprecated diseases
+#input: doid.owl
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX oboInOwl: <http://www.geneontology.org/formats/oboInOwl#>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+
+SELECT ?status (COUNT(DISTINCT ?def) AS ?definitions)
+  (COUNT(DISTINCT ?def_src) AS ?sources)
+  (COUNT(DISTINCT ?def_code) AS ?evidence_codes)
+WHERE {
+  ?iri a owl:Class ;
+    oboInOwl:hasOBONamespace "disease_ontology" ;
+    obo:IAO_0000115 ?def .
+
+  # definition source(s) -- must have at least one when defined
+  OPTIONAL {
+    [] owl:annotatedSource ?iri ;
+      owl:annotatedProperty obo:IAO_0000115 ;
+      owl:annotatedTarget ?def ;
+      oboInOwl:hasDbXref ?src .
+      BIND(concat(?def, ?src) AS ?def_src)
+  }
+
+  # evidence code(s)
+  OPTIONAL {
+    [] owl:annotatedSource ?iri ;
+      owl:annotatedProperty obo:IAO_0000115 ;
+      owl:annotatedTarget ?def ;
+      dc:type ?code .
+      BIND(concat(?def, str(?code)) AS ?def_code)
+  }
+
+  BIND(
+    IF(EXISTS { ?iri owl:deprecated true }, "deprecated", "active") AS ?status
+  )
+}
+GROUP BY ?status
+ORDER BY ?status
