@@ -1,0 +1,19 @@
+#id: DOq024
+#description: List all cross-references in DO to the Unified Medical Language System (UMLS) (active diseases only)
+#input: doid.owl
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX oboInOwl: <http://www.geneontology.org/formats/oboInOwl#>
+
+SELECT ?id ?label ?xref
+WHERE {
+  ?class a owl:Class ;
+    oboInOwl:hasOBONamespace "disease_ontology" ;
+    oboInOwl:id ?id ;
+    rdfs:label ?label ;
+    oboInOwl:hasDbXref ?xref .
+
+  FILTER(STRSTARTS(?xref, "UMLS_CUI:"))
+  FILTER NOT EXISTS { ?class owl:deprecated true }
+}
+ORDER BY ?id ?xref
