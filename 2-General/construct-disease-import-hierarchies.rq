@@ -1,0 +1,19 @@
+#id: DOq035
+#description: Recreate the disease and supporting import class hierarchies using subClassOf relationships (executes a CONSTRUCT query that returns RDF triples)
+#input: doid-merged.owl
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX oboInOwl: <http://www.geneontology.org/formats/oboInOwl#>
+
+CONSTRUCT {
+  ?iri rdfs:subClassOf ?parent_class ;
+    rdfs:label ?label .
+  ?parent_class rdfs:label ?parent_label .
+}
+FROM <http://purl.obolibrary.org/obo/doid/doid-merged.owl>
+WHERE {
+  ?iri rdfs:subClassOf ?parent_class ;
+    rdfs:label ?label .
+  ?parent_class rdfs:label ?parent_label .
+}

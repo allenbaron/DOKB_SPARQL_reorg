@@ -1,0 +1,23 @@
+#id: DOq028
+#description: Sarcoma diseases with their ID label, and parents (identified as descendants of sarcoma, DOID:1115, or from having 'sarcoma' in their label)
+#input: doid.owl
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX oboInOwl: <http://www.geneontology.org/formats/oboInOwl#>
+PREFIX DOID: <http://purl.obolibrary.org/obo/DOID_>
+
+SELECT ?id ?label (GROUP_CONCAT(DISTINCT ?parent; separator="|") AS ?parents)
+  ?sarcoma_in_label ?sarcoma_descendant
+WHERE {
+  ?class oboInOwl:id ?id ;
+    rdfs:label ?label ;
+    rdfs:subClassOf ?parent_class .
+
+  ?parent_class oboInOwl:id ?parent_id ;
+    rdfs:label ?parent_label .
+  BIND(concat(?parent_label, " (", ?parent_id, ")") AS ?parent)
+
+  BIND(EXISTS { ?class rdfs:subClassOf* DOID:1115 } AS ?sarcoma_descendant)
+  BIND(regex(?label, "sarcoma", "i") AS ?sarcoma_in_label)
+  FILTER(?sarcoma_in_label || ?sarcoma_descendant)
+}
+GROUP BY ?id ?label ?sarcoma_in_label ?sarcoma_descendant

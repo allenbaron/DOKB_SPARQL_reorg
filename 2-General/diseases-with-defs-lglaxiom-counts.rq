@@ -1,0 +1,27 @@
+#id: DOq032
+#description: All diseases, with their text definitions and counts of logical axioms by type
+#input: doid.owl
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX oboInOwl: <http://www.geneontology.org/formats/oboInOwl#>
+PREFIX doid: <http://purl.obolibrary.org/obo/doid#>
+
+SELECT ?id ?label ?def (COUNT(DISTINCT ?sc_axiom) AS ?subClassOf_axioms)
+  (COUNT(DISTINCT ?eq) AS ?eqClass_axioms)
+WHERE {
+  ?iri oboInOwl:id ?id ;
+    rdfs:label ?label .
+
+  FILTER NOT EXISTS { ?iri owl:deprecated true }
+
+  OPTIONAL { ?iri obo:IAO_0000115 ?def  }
+
+  OPTIONAL {
+    ?iri rdfs:subClassOf ?sc_axiom .
+    FILTER(isBlank(?sc_axiom))
+  }
+
+  OPTIONAL { ?iri owl:equivalentClass ?eq }
+}
+GROUP BY ?id ?label ?def

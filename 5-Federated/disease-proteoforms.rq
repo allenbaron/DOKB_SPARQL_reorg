@@ -1,0 +1,32 @@
+#id: DOq036
+#description: Retrieve proteoforms from the Protein Ontology (PRO) associated with progression of cancer
+#input: [doid.owl, https://sparql.proconsortium.org/virtuoso/sparql]
+#note: Modified from PRO PQ4 at https://lod.proconsortium.org/yasgui.html
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX oboInOwl: <http://www.geneontology.org/formats/oboInOwl#>
+PREFIX paf: <http://pir.georgetown.edu/pro/paf#>
+
+SELECT distinct ?DO_term ?disease ?PRO_term ?PRO_name
+WHERE {
+  SERVICE <https://sparql.proconsortium.org/virtuoso/sparql> {
+    ?x a rdf:Statement ;
+      rdf:subject ?PRO_term ;
+      rdf:predicate [ paf:relation "associated_with_disease_progression" ] ;
+      rdf:object ?xo .
+
+    ?xo paf:ontologyID ?doid .
+
+    ?PRO_term paf:objectTerm ?PRO_name .
+  }
+
+  ?DO_term a owl:Class ;
+    oboInOwl:id ?doid ;
+    rdfs:label ?disease ;
+    rdfs:subClassOf* obo:DOID_162 .
+}

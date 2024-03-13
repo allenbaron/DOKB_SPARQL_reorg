@@ -1,0 +1,15 @@
+#id: DOq027
+#description: All syndromes with their IRI, ID and label (identified as descendants of syndrome, DOID:225)
+#input: doid.owl
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX oboInOwl: <http://www.geneontology.org/formats/oboInOwl#>
+
+SELECT ?iri ?id ?label
+WHERE {
+  ?iri a owl:Class ;
+    oboInOwl:id ?id ;
+    rdfs:label ?label ;
+    rdfs:subClassOf* obo:DOID_225 .
+}

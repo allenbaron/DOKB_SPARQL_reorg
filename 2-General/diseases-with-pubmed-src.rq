@@ -1,0 +1,26 @@
+#id: DOq030
+#description: Diseases with PubMed sources (limited to first 10 results)
+#input: doid.owl
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX oboInOwl: <http://www.geneontology.org/formats/oboInOwl#>
+
+SELECT ?id ?label ?pubmed_src
+WHERE {
+  ?iri a owl:Class ;
+    oboInOwl:id ?id ;
+    rdfs:label ?label ;
+    obo:IAO_0000115 ?def .
+
+  FILTER NOT EXISTS { ?iri owl:deprecated true }
+
+  ?anonymous_class owl:annotatedSource ?iri ;
+    owl:annotatedProperty obo:IAO_0000115 ;
+    owl:annotatedTarget ?def ;
+    oboInOwl:hasDbXref ?def_src .
+
+  FILTER(contains(lcase(str(?def_src)), "pubmed"))
+  BIND(strafter(str(?def_src), "url:") AS ?pubmed_src)
+}
+LIMIT 10

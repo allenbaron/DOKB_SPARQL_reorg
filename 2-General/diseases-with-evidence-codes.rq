@@ -1,0 +1,28 @@
+#id: DOq033
+#description: Diseases with their Evidence and Conclusion Ontology (ECO) reference types
+#input: doid-merged.owl
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX oboInOwl: <http://www.geneontology.org/formats/oboInOwl#>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+
+SELECT ?id ?label (GROUP_CONCAT(?eco;separator="|") AS ?ref_type)
+FROM <http://purl.obolibrary.org/obo/doid/doid-merged.owl>
+WHERE {
+  ?iri oboInOwl:id ?id ;
+     rdfs:label ?label ;
+     obo:IAO_0000115 ?def .
+
+  ?anon_class owl:annotatedSource ?iri ;
+    owl:annotatedProperty obo:IAO_0000115 ;
+    owl:annotatedTarget ?def ;
+    dc:type ?eco_class .
+
+  ?eco_class oboInOwl:id ?eco_id ;
+    rdfs:label ?eco_label .
+
+  BIND(concat(str(?eco_label), " (", str(?eco_id), ")") AS ?eco)
+}
+GROUP BY ?id ?label
+ORDER BY ?id
