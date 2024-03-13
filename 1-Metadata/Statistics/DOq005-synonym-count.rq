@@ -1,0 +1,23 @@
+#id: DOq005
+#description: Count of synonyms in the DO by type (active diseases only)
+#input: doid.owl
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX oboInOwl: <http://www.geneontology.org/formats/oboInOwl#>
+
+SELECT ?syn_type (COUNT(DISTINCT ?synonym) AS ?count)
+WHERE {
+  VALUES ?types {
+    oboInOwl:hasExactSynonym oboInOwl:hasBroadSynonym
+    oboInOwl:hasNarrowSynonym oboInOwl:hasRelatedSynonym
+  }
+
+  ?iri a owl:Class ;
+    oboInOwl:hasOBONamespace "disease_ontology" ;
+    ?types ?synonym .
+
+  BIND(CONCAT("oboInOwl:", STRAFTER(str(?types), "oboInOwl#")) AS ?syn_type)
+
+  FILTER NOT EXISTS { ?iri owl:deprecated ?deprecated }
+}
+GROUP BY ?syn_type
+ORDER BY ?syn_type
