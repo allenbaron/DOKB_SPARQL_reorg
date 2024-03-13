@@ -1,0 +1,18 @@
+#id: DOq006
+#description: Count of xrefs in the DO by prefix (active diseases only)
+#input: doid.owl
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX oboInOwl: <http://www.geneontology.org/formats/oboInOwl#>
+
+SELECT ?prefix (COUNT(?xref) AS ?count)
+WHERE {
+    ?iri a owl:Class ;
+        oboInOwl:hasOBONamespace "disease_ontology" ;
+        oboInOwl:hasDbXref ?xref .
+
+    BIND(STRBEFORE(str(?xref), ":") AS ?prefix)
+
+    FILTER NOT EXISTS { ?iri owl:deprecated true }
+}
+GROUP BY ?prefix
+ORDER BY ?prefix
