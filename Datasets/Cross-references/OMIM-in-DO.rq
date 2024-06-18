@@ -13,7 +13,7 @@ WHERE {
     rdfs:label ?label ;
     oboInOwl:hasDbXref ?xref .
 
-  FILTER(STRSTARTS(?xref, "OMIM:"))
+  FILTER(REGEX(?xref, "^O?MIM:"))
   FILTER NOT EXISTS { ?class owl:deprecated true }
 }
 ORDER BY ?id ?xref
