@@ -1,0 +1,48 @@
+#id: DOq201
+#description: All transmission methods imported from TRANS and their linked data
+#input: doid-merged.owl
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX oboInOwl: <http://www.geneontology.org/formats/oboInOwl#>
+
+SELECT *
+FROM <http://purl.obolibrary.org/obo/doid/doid-merged.owl>
+WHERE {
+  # general symptoms information
+  ?iri a owl:Class ;
+    oboInOwl:id ?id ;
+    rdfs:label ?label .
+  FILTER(CONTAINS(str(?iri), "TRANS"))
+
+  # deprecation status
+  OPTIONAL { ?iri owl:deprecated ?deprecated . }
+
+  # definition
+  OPTIONAL {
+    ?iri obo:IAO_0000115 ?definition .
+
+    # definition source(s) -- must have at least one when defined
+    OPTIONAL {
+      [] owl:annotatedSource ?iri ;
+        owl:annotatedProperty obo:IAO_0000115 ;
+        owl:annotatedTarget ?definition ;
+        oboInOwl:hasDbXref ?def_src .
+    }
+  }
+
+  # parent(s) -- must have at least one
+  OPTIONAL {
+    ?iri rdfs:subClassOf ?parent_IRI .
+    FILTER(!isBlank(?parent_IRI))
+  }
+
+  # synonym(s)
+  OPTIONAL {
+    VALUES ?syn_relation {
+       oboInOwl:hasExactSynonym oboInOwl:hasBroadSynonym
+       oboInOwl:hasNarrowSynonym oboInOwl:hasRelatedSynonym
+    }
+    ?iri ?syn_relation ?synonym .
+  }
+}
