@@ -1,29 +1,19 @@
-#id: DOq040
+#id: DOq026
 #description: List all exact synonyms (active diseases only)
 #input: doid.owl
+#superseded_by: DOq040
+#superseded_reason: Newer identifies acronyms
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX obo: <http://purl.obolibrary.org/obo/>
 PREFIX oboInOwl: <http://www.geneontology.org/formats/oboInOwl#>
 
-SELECT ?id ?label ?exact_synonym ?syn_is_acronym
+SELECT ?id ?label ?exact_synonym
 WHERE {
   ?class a owl:Class ;
     oboInOwl:hasOBONamespace "disease_ontology" ;
     oboInOwl:id ?id ;
     rdfs:label ?label ;
     oboInOwl:hasExactSynonym ?exact_synonym .
-
-  # identify acronym(s)
-  BIND(
-    EXISTS {
-      [] a owl:Axiom ;
-        owl:annotatedSource ?class ;
-        owl:annotatedProperty oboInOwl:hasExactSynonym ;
-        owl:annotatedTarget ?exact_synonym ;
-        oboInOwl:hasSynonymType obo:OMO_0003012 .
-    } AS ?syn_is_acronym
-  )
 
   FILTER NOT EXISTS { ?class owl:deprecated true }
 }

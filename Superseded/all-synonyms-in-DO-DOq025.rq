@@ -1,12 +1,12 @@
-#id: DOq039
+#id: DOq025
 #description: List all synonyms with their relationship (active diseases only)
 #input: doid.owl
+#comment: Superseded by DOq039, which identifies acronyms
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX obo: <http://purl.obolibrary.org/obo/>
 PREFIX oboInOwl: <http://www.geneontology.org/formats/oboInOwl#>
 
-SELECT ?id ?label ?syn_relation ?synonym ?syn_is_acronym
+SELECT ?id ?label ?syn_relation ?synonym
 WHERE {
   ?class a owl:Class ;
     oboInOwl:hasOBONamespace "disease_ontology" ;
@@ -19,19 +19,8 @@ WHERE {
     oboInOwl:hasNarrowSynonym oboInOwl:hasRelatedSynonym
   }
 
-  # identify acronym(s)
-  BIND(
-    EXISTS {
-      [] a owl:Axiom ;
-        owl:annotatedSource ?class ;
-        owl:annotatedProperty ?relation ;
-        owl:annotatedTarget ?synonym ;
-        oboInOwl:hasSynonymType obo:OMO_0003012 .
-    } AS ?syn_is_acronym
-  )
-
   BIND(concat("oboInOwl:", strafter(str(?relation), "#")) AS ?syn_relation)
 
   FILTER NOT EXISTS { ?class owl:deprecated true }
 }
-ORDER BY ?id ?syn_relation ?syn_is_acronym ?synonym
+ORDER BY ?id ?syn_relation ?synonym
