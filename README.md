@@ -1,6 +1,6 @@
 # DO-KB SPARQL queries
 
-This repository contains SPARQL (version 1.1[^1]) queries designed for the Disease Ontology Knowledgebase (DO-KB) SPARQL sandbox (online editor) and endpoint (programmatic access/federated query endpoint) and utilize the data in the Human Disease Ontology (DO) ([disease-ontology.org](https://disease-ontology.org) / GitHub: [HumanDiseaseOntology](https://github.com/DiseaseOntology/HumanDiseaseOntology)). 
+This repository contains SPARQL (version 1.1[^1]) queries designed for the Disease Ontology Knowledgebase (DO-KB) SPARQL sandbox (online editor) and endpoint (programmatic access/federated query endpoint) and utilize the data in the Human Disease Ontology (DO) ([disease-ontology.org](https://disease-ontology.org) / GitHub: [HumanDiseaseOntology](https://github.com/DiseaseOntology/HumanDiseaseOntology)).
 - DO-KB SPARQL sandbox: https://disease-ontology.org/do-kb/sparql
 - DO-KB SPARQL endpoint: https://sparql.disease-ontology.org/
 
@@ -15,7 +15,7 @@ Additional information can be found on the [SPARQL resources](https://disease-on
 
 <details>
 
-<summary>_Code to list DO query IDs_</summary>
+<summary><i>Code to list DO query IDs</i></summary>
 
 ```
 grep -REoh "DOq[0-9]{3}" * | sort --reverse | uniq -c
