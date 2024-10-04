@@ -52,12 +52,14 @@ WHERE {
 
 	SERVICE <http://id.nlm.nih.gov/mesh/sparql> {
 		?mesh meshv:active false ;
-			meshv:lastActiveYear ?object_source_version .
+			meshv:lastActiveYear ?object_source_version ;
+			# All MeSH topical descriptors & SCR diseases have a preferred
+			#	concept & label
+			meshv:preferredConcept ?concept ;
+			rdfs:label ?object_label .
 
 		# Get the replacement MeSH term, if available
 		OPTIONAL {
-			?mesh meshv:preferredConcept ?concept ;
-				rdfs:label ?object_label .
 			?replace meshv:preferredConcept ?concept ;
 				meshv:active true ;
 				rdfs:label ?replace_label .
