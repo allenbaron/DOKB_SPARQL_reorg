@@ -4,12 +4,13 @@
 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX oboInOwl: <http://www.geneontology.org/formats/oboInOwl#>
 PREFIX meshv: <http://id.nlm.nih.gov/mesh/vocab#>
 PREFIX mesh: <http://id.nlm.nih.gov/mesh/>
 
 SELECT ?subject_id ?subject_label ?predicate ?object_id ?object_label
-	?last_active ?replace_object ?replace_label
+	?replace_object ?replace_label ?subject_source_version ?object_source_version
 WHERE {
 	VALUES (?predicate ?mapping_type) {
 		("oboInOwl:hasDbXref" oboInOwl:hasDbXref)
@@ -42,9 +43,16 @@ WHERE {
 		) AS ?object_id
 	)
 
+	# Get the source version of the DO
+	[] owl:versionIRI ?src_version_iri .
+	BIND(
+		REPLACE(str(?src_version_iri), ".*doid/releases/([^/]+)/.*", "$1")
+		AS ?subject_source_version
+	)
+
 	SERVICE <http://id.nlm.nih.gov/mesh/sparql> {
 		?mesh meshv:active false ;
-			meshv:lastActiveYear ?last_active .
+			meshv:lastActiveYear ?object_source_version .
 
 		# Get the replacement MeSH term, if available
 		OPTIONAL {
