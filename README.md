@@ -18,7 +18,7 @@ Additional information can be found on the [SPARQL resources](https://disease-on
 <summary><i>Code to list DO query IDs</i></summary>
 
 ```
-grep -REoh "id: DOq[0-9]{3}" * | sort --reverse | uniq -c
+grep -REh "[# ]id:" * | grep -Eo "DOq[0-9]{3}" | sort --reverse | uniq -c
 ```
 
 </details>
