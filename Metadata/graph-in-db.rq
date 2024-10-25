@@ -1,0 +1,8 @@
+#id: DOq042
+#description: List the graphs included in the SPARQL database
+#comment: Should work for other SPARQL databases (with added SERVICE statement
+#  to specify the endpoint).
+SELECT DISTINCT ?graph
+WHERE {
+  GRAPH ?graph { ?s ?p ?o }
+}
