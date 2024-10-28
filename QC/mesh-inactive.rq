@@ -1,5 +1,6 @@
 #id: DOq...
-#description: Identify MeSH xrefs in the DO that are not active, and suggest replacements
+#description: >-
+#  Identify MeSH xrefs in the DO that are not active, and suggest replacements
 #target: [doid.owl, https://id.nlm.nih.gov/mesh/sparql]
 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>

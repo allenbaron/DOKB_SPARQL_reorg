@@ -1,5 +1,6 @@
 #id: DOq008
-#description: Count of all imported terms from other ontologies by root (auto-identified)
+#description: >-
+#  Count of all imported terms from other ontologies by root (auto-identified)
 #input: doid-merged.owl
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>

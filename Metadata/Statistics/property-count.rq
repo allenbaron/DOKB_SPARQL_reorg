@@ -1,5 +1,7 @@
 #id: DOq009
-#description: Count each object/annotation property used in DO (excluding imports) by ORIGINAL namespace
+#description: >-
+#  Count each object/annotation property used in DO (excluding imports) by
+#  ORIGINAL namespace
 #input: doid.owl
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 

@@ -1,5 +1,7 @@
 #id: DOq023
-#description: List all cross-references in DO to the SNOMED CT United States Edition (SNOMEDCT_US) (active diseases only)
+#description: >-
+#  List all cross-references in DO to the SNOMED CT United States Edition
+#  (SNOMEDCT_US) (active diseases only)
 #input: doid.owl
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>

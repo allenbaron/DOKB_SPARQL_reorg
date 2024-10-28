@@ -1,8 +1,9 @@
 #id: DOq043
-#description: Get information about graphs (ontology datasets) in DO's SPARQL endpoint
+#description: Get info about graphs (ontology datasets) in DO's SPARQL endpoint
 #input: [doid.owl, doid-merged.owl]
-#comment: The default graph is doid.owl. FROM statements are required to query
-#  other graphs or more than one graph.
+#comment: >-
+#  The default graph is doid.owl. FROM statements are required to query other
+#  graphs or more than one graph.
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dc: <http://purl.org/dc/elements/1.1/>
 PREFIX dcterms: <http://purl.org/dc/terms/>

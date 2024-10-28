@@ -1,5 +1,7 @@
 #id: DOq028
-#description: Sarcoma diseases with their ID label, and parents (identified as descendants of sarcoma, DOID:1115, or from having 'sarcoma' in their label)
+#description: >-
+#  Sarcoma diseases with their ID label, and parents (identified as descendants
+#  of sarcoma, DOID:1115, or from having 'sarcoma' in their label)
 #input: doid.owl
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX oboInOwl: <http://www.geneontology.org/formats/oboInOwl#>

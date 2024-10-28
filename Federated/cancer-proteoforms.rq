@@ -1,5 +1,7 @@
 #id: DOq036
-#description: Retrieve proteoforms from the Protein Ontology (PRO) associated with progression of cancer
+#description: >-
+#  Retrieve proteoforms from the Protein Ontology (PRO) associated with
+#  progression of cancer
 #input: [doid.owl, https://sparql.proconsortium.org/virtuoso/sparql]
 #comment: Modified from PRO PQ4 at https://lod.proconsortium.org/yasgui.html
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>

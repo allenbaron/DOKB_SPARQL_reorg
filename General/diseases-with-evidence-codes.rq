@@ -1,5 +1,6 @@
 #id: DOq033
-#description: Diseases with their Evidence and Conclusion Ontology (ECO) reference types
+#description: >-
+#  Diseases with their Evidence and Conclusion Ontology (ECO) reference types
 #input: doid-merged.owl
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>

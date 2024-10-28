@@ -1,5 +1,7 @@
 #id: DOq004
-#description: Count of all definitions, sources, and evidence codes on active/deprecated diseases
+#description: >-
+#  Count of all definitions, sources, and evidence codes on active/deprecated
+#  diseases
 #input: doid.owl
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX obo: <http://purl.obolibrary.org/obo/>

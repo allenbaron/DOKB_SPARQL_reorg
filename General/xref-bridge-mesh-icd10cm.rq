@@ -1,5 +1,7 @@
 #id: DOq029
-#description: Complete mapping from MeSH to ICD10CM codes, using DO disease cross-references (active diseases only)
+#description: >-
+#  Complete mapping from MeSH to ICD10CM codes, using DO disease
+#  cross-references (active diseases only)
 #input: doid.owl
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX oboInOwl: <http://www.geneontology.org/formats/oboInOwl#>

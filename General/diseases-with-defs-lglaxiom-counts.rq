@@ -1,5 +1,7 @@
 #id: DOq032
-#description: All diseases, with their text definitions and counts of logical axioms by type
+#description: >-
+#  All diseases, with their text definitions and counts of logical axioms by
+#  type
 #input: doid.owl
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>

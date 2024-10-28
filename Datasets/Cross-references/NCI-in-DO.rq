@@ -1,5 +1,7 @@
 #id: DOq020
-#description: List all cross-references in DO to the National Cancer Institute (NCI) Thesaurus (active diseases only)
+#description: >-
+#  List all cross-references in DO to the National Cancer Institute (NCI)
+#  Thesaurus (active diseases only)
 #input: doid.owl
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>

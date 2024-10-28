@@ -1,5 +1,6 @@
 #id: DOq031
-#description: Diseases in the DO_infectious_disease_slim with their parents and branches
+#description: >-
+#  Diseases in the DO_infectious_disease_slim with their parents and branches
 #doid.owl
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>

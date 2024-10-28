@@ -1,5 +1,7 @@
 #id: DOq027
-#description: All syndromes with their IRI, ID and label (identified as descendants of syndrome, DOID:225)
+#description: >-
+#  All syndromes with their IRI, ID and label (identified as descendants of
+#  syndrome, DOID:225)
 #input: doid.owl
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>

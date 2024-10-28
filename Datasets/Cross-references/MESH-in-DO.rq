@@ -1,5 +1,7 @@
 #id: DOq019
-#description: List all cross-references in DO to the National Library of Medicine's Medical Subject Headings (MeSH) (active diseases only)
+#description: >-
+#  List all cross-references in DO to the National Library of Medicine's Medical
+#  Subject Headings (MeSH) (active diseases only)
 #input: doid.owl
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
