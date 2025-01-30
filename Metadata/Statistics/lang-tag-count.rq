@@ -1,0 +1,33 @@
+#id: DOq051
+#description: >-
+#  Count of language tags used for class annotations by class namespace;
+#  limited to specific annotation properties that are expected to use natural
+#  language
+#input: []
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX oboInOwl: <http://www.geneontology.org/formats/oboInOwl#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT ?namespace ?lang (COUNT(?lang) AS ?count)
+WHERE {
+  VALUES ?pred {
+    rdfs:label
+    obo:IAO_0000115
+    oboInOwl:hasExactSynonym
+    oboInOwl:hasRelatedSynonym
+    oboInOwl:hasBroadSynonym
+    oboInOwl:hasNarrowSynonym
+    rdfs:comment
+    skos:prefLabel
+    skos:definition
+  }
+    
+  ?iri a owl:Class ;
+    ?pred ?literal .
+  BIND(LANG(?literal) AS ?lang)
+  BIND(REPLACE(str(?iri), ".*/([^#_]+).*", "$1") AS ?namespace)
+}
+GROUP BY ?namespace ?lang
+ORDER BY ?namespace ?lang
